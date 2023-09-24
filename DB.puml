@@ -1,0 +1,38 @@
+@startuml
+class User {
+    - _id: ObjectId
+    - firstname: String
+    - lastname: String
+    - email: String
+    - password: String
+    - role: String
+    - idCard: String (optional)
+    - pilotLicense: String (optional)
+}
+
+class Flight {
+    - _id: ObjectId
+    - idFlight: String
+    - plane: String
+    - pilot: String
+    - aerodrome: String
+    - seats: Number
+    - seatsAvailable: Number
+    - date: String
+    - duration: String
+    - price: Number
+    - disableSeats: Number
+}
+
+class Passenger {
+    - _id: ObjectId
+    - idFlight: String
+    - idPassenger: String
+    - seatQuantity: Number
+    - disableSeatQuantity: Number
+}
+
+User -- Passenger : 1-1
+Passenger -- Flight : n-1
+User -- Flight : 1-n
+@enduml
