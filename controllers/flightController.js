@@ -38,6 +38,18 @@ const getFlightById = asyncHandler(async (req,res)=>{
     }
 })
 
+
+const getFlightsByPilote = asyncHandler(async (req,res)=>{
+    const flights = await Flight.find({pilote:req.params.pilote})
+    if (flights) {
+        res.json(flights)
+    } else {
+        res.status(404)
+        console.log('Flight non existant')
+        throw new Error('Flights non existant')
+    }
+})
+
 const getFlightsByFilters = asyncHandler(async (req,res)=>{
     const params = JSON.parse(req.params.filter)
     const flights = await Flight.find({aerodrome:{$regex:params.aerodrome}, plane:{$regex:params.plane}, date:{$regex:params.date}})
@@ -176,10 +188,38 @@ const addPassenger = asyncHandler(async (req,res)=>{
     }
 })
 
+const deleteFlight = asyncHandler(async (req,res)=>{
+    const result = await Flight.deleteOne({idFlight:req.params.flight})
+    if(result)
+        return res.status(201).json({
+            message:`Success`
+        })
+    else
+        return res.status(400).json({
+            message:"Fail to delete flight"
+        })
+})
+
+const deletePassenger = asyncHandler(async (req,res)=>{
+    const result = await FlightPassenger.deleteOne({idFlight:{$regex:req.params.flight}, idPassenger:{$regex:req.params.passenger}})
+    console.log(result)
+    if(result)
+        return res.status(201).json({
+            message:`Success`
+        })
+    else
+        return res.status(400).json({
+            message:"Fail to delete book"
+        })
+})
+
 export {
     getFlights,
     getFlightById,
+    getFlightsByPilote,
     getFlightsByFilters,
     addFlight,
-    addPassenger
+    addPassenger,
+    deleteFlight,
+    deletePassenger
 }

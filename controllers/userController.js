@@ -123,7 +123,7 @@ const checkUser = (mail,password) => {
         html: `<p>Click on the link to confirm your mail address : <a href="${verifLink}"></a></p>`
     }
 
-    transporter.sendMail(mailOptions, (err, info)=> {
+    transporter.sendMail(options, (err, info)=> {
         if(err) {
             console.log(err)
         } else {
